@@ -41,9 +41,14 @@ E:\PhoneGap\parker\platforms\android\assets\www\css\tizen.css \
 E:\PhoneGap\parker\platforms\android\assets\www\css\win8.css \
 E:\PhoneGap\parker\platforms\android\assets\www\img\back1.png \
 E:\PhoneGap\parker\platforms\android\assets\www\img\back2.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\blue.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\green.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\location.png \
 E:\PhoneGap\parker\platforms\android\assets\www\img\logo.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\mark.png \
 E:\PhoneGap\parker\platforms\android\assets\www\img\mark1.png \
-E:\PhoneGap\parker\platforms\android\assets\www\img\mark2.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\position.png \
+E:\PhoneGap\parker\platforms\android\assets\www\img\red.png \
 E:\PhoneGap\parker\platforms\android\assets\www\img\sf.png \
 E:\PhoneGap\parker\platforms\android\assets\www\js\appframework.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\appframework.min.js \
