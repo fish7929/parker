@@ -3,18 +3,23 @@ var geolocation = new BMap.Geolocation();
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady(){
-	//通过百度地图获取当前位置
-	geolocation.getCurrentPosition(function(r){
-		if(this.getStatus() == BMAP_STATUS_SUCCESS){
-			initMap(r.point);
-		}
-	});
-	//navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 1000*60*10,timeout: 1000*60*2, enableHighAccuracy: false });
-	document.addEventListener("backbutton", onBackKeyDown, false);
-	$("#searchBtn").click(function(e){
-		e.preventDefault(); //阻止跳转事件
-		searchMap();
-	});
+	var HomeLogo = getData("HomeLogo");
+	if (HomeLogo == null) {
+		window.location.href = "logo.html";
+	}else{
+		//通过百度地图获取当前位置
+		geolocation.getCurrentPosition(function(r){
+			if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				initMap(r.point);
+			}
+		});
+		//navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 1000*60*10,timeout: 1000*60*2, enableHighAccuracy: false });
+		document.addEventListener("backbutton", onBackKeyDown, false);
+		$("#searchBtn").click(function(e){
+			e.preventDefault(); //阻止跳转事件
+			searchMap();
+		});
+	}
 }
 function onSuccess(position) {
 	var longitude = position.coords.longitude;
@@ -41,18 +46,6 @@ function createMap(point){
 	var map = new BMap.Map("main");//在百度地图容器中创建一个地图
 	map.centerAndZoom(point,17);//设定地图的中心点和坐标并将地图显示在地图容器中
 	window.map = map;//将map变量存储在全局
-	/*
-	var myIcon = new BMap.Icon("http://api.map.baidu.com/mapCard/img/location.gif",   
-		new BMap.Size(14, 23), {      
-		// 指定定位位置。     
-		// 当标注显示在地图上时，其所指向的地理位置距离图标左上      
-		// 角各偏移7像素和25像素。您可以看到在本例中该位置即是     
-		// 图标中央下端的尖角位置。      
-		anchor: new BMap.Size(7, 25),        
-	});        
-	var marker = new BMap.Marker(point, {icon: myIcon});        // 创建标注      
-	map.addOverlay(marker);
-	*/
 	addPositionMarker(point);
 }
 

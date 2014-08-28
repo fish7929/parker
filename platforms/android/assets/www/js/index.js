@@ -1,40 +1,25 @@
-﻿//标注点数组
-var markerArr = [{title:"昆山市司法局",imgUrl: "img/mark.png", content:"前进西路148号 电话：57507618",point:"120.967547|31.389313",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"高新区(玉山镇)司法所",imgUrl: "img/mark.png",content:"昆山市北门路757号 电话：57571148",point:"120.959274|31.415357",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"巴城镇司法所",imgUrl: "img/mark.png",content:"巴城镇景城南路88号 电话：57980698",point:"120.885415|31.457413",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"周市镇司法所",imgUrl: "img/mark.png",content:"周市镇惠安路12号 电话：57625148",point:"121.0033|31.470966",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"开发区司法办",imgUrl: "img/mark.png",content:"昆山市长江中路428号 电话：55216821",point:"120.984417|31.391332",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"陆家镇司法所",imgUrl: "img/mark.png",content:"陆家镇政府院内 电话：57671667",point:"121.054943|31.320739",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"花桥镇司法所",imgUrl: "img/mark.png",content:"花桥镇花溪路 电话：57691212",point:"121.096589|31.307288",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"千灯镇司法所",imgUrl: "img/mark.png",content:"千灯镇政府院内 电话：57466467",point:"121.01045|31.273946",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"淀山湖镇司法所",imgUrl: "img/mark.png",content:"淀山湖镇振淀路229号 电话：57488204",point:"121.037282|31.183918",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"张浦镇司法所",imgUrl: "img/mark.png",content:"张浦镇银河路2号 电话：57453612",point:"120.942727|31.279115",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"锦溪镇司法所",imgUrl: "img/mark.png",content:"锦溪镇普庆路116号 电话：57224860",point:"120.908043|31.186915",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ,{title:"周庄镇司法所",imgUrl: "img/mark.png",content:"周庄镇全旺路100号 电话：57211692",point:"120.858565|31.135356",isOpen:0,icon:{w:32,h:32,l:0,t:0,x:6,lb:5}}
-	 ];
-//陆地标注数组
-var roadMarkerArr = [{title:"宜浩佳园停车库",imgUrl: "img/blue.png",status:"more", content:"价格：5元/小时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车位：120/480<br >竹柏路宜浩佳园100弄", remainSpace:120, point:"121.920667|30.908147", isOpen:0,icon:{w:72,h:72,l:0,t:0,x:6,lb:5}}
-			,{title:"宜浩佳园停车库", imgUrl: "img/red.png",status:"pinch",content:"价格：5元/小时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车位：130/500<br >竹柏路宜浩佳园111弄", remainSpace:130,point:"121.92126|30.90621", isOpen:0,icon:{w:72,h:72,l:0,t:0,x:6,lb:5}}
-			,{title:"宜浩佳园停车库",imgUrl: "img/green.png", status:"less",content:"价格：5元/小时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车位：140/550<br >竹柏路宜浩佳园366弄", remainSpace:140,point:"121.916445|30.907961", isOpen:0,icon:{w:72,h:72,l:0,t:0,x:6,lb:5}}
-			,{title:"宜浩佳园停车库", imgUrl: "img/blue.png",status:"more", content:"价格：5元/小时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车位：150/680<br >竹柏路宜浩佳园333弄", remainSpace:150,point:"121.915654|30.906025", isOpen:0,icon:{w:72,h:72,l:0,t:0,x:6,lb:5}}
-			];
-//移动到当前坐标的位置
+﻿//移动到当前坐标的位置
 var geolocation = new BMap.Geolocation();
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady(){
-	//通过百度地图获取当前位置
-	geolocation.getCurrentPosition(function(r){
-		if(this.getStatus() == BMAP_STATUS_SUCCESS){
-			initMap(r.point);
-		}
-	});
-	//navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 1000*60*10,timeout: 1000*60*2, enableHighAccuracy: false });
-	document.addEventListener("backbutton", onBackKeyDown, false);
-	$("#searchBtn").click(function(e){
-		e.preventDefault(); //阻止跳转事件
-		searchMap();
-	});
+	var HomeLogo = getData("HomeLogo");
+	if (HomeLogo == null) {
+		window.location.href = "logo.html";
+	}else{
+		//通过百度地图获取当前位置
+		geolocation.getCurrentPosition(function(r){
+			if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				initMap(r.point);
+			}
+		});
+		//navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 1000*60*10,timeout: 1000*60*2, enableHighAccuracy: false });
+		document.addEventListener("backbutton", onBackKeyDown, false);
+		$("#searchBtn").click(function(e){
+			e.preventDefault(); //阻止跳转事件
+			searchMap();
+		});
+	}
 }
 function onSuccess(position) {
 	var longitude = position.coords.longitude;
@@ -61,18 +46,6 @@ function createMap(point){
 	var map = new BMap.Map("main");//在百度地图容器中创建一个地图
 	map.centerAndZoom(point,17);//设定地图的中心点和坐标并将地图显示在地图容器中
 	window.map = map;//将map变量存储在全局
-	/*
-	var myIcon = new BMap.Icon("http://api.map.baidu.com/mapCard/img/location.gif",   
-		new BMap.Size(14, 23), {      
-		// 指定定位位置。     
-		// 当标注显示在地图上时，其所指向的地理位置距离图标左上      
-		// 角各偏移7像素和25像素。您可以看到在本例中该位置即是     
-		// 图标中央下端的尖角位置。      
-		anchor: new BMap.Size(7, 25),        
-	});        
-	var marker = new BMap.Marker(point, {icon: myIcon});        // 创建标注      
-	map.addOverlay(marker);
-	*/
 	addPositionMarker(point);
 }
 

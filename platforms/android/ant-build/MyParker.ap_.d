@@ -29,6 +29,7 @@ E:\PhoneGap\parker\platforms\android\assets\www\css \
 E:\PhoneGap\parker\platforms\android\assets\www\img \
 E:\PhoneGap\parker\platforms\android\assets\www\index.html \
 E:\PhoneGap\parker\platforms\android\assets\www\js \
+E:\PhoneGap\parker\platforms\android\assets\www\logo.html \
 E:\PhoneGap\parker\platforms\android\assets\www\plugins \
 E:\PhoneGap\parker\platforms\android\assets\www\ui \
 E:\PhoneGap\parker\platforms\android\assets\www\css\afui.less \
@@ -66,6 +67,7 @@ E:\PhoneGap\parker\platforms\android\assets\www\img\splash.png \
 E:\PhoneGap\parker\platforms\android\assets\www\js\appframework.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\appframework.min.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\index.js \
+E:\PhoneGap\parker\platforms\android\assets\www\js\iscroll.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\jq.appframework.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\jquery-1.10.2.min.js \
 E:\PhoneGap\parker\platforms\android\assets\www\js\storage.js \
