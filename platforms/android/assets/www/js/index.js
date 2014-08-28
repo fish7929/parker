@@ -23,8 +23,7 @@ var geolocation = new BMap.Geolocation();
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady(){
-	//initMap();//创建和初始化地图
-	//navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout: 50000, enableHighAccuracy: true });
+	//通过百度地图获取当前位置
 	geolocation.getCurrentPosition(function(r){
 		if(this.getStatus() == BMAP_STATUS_SUCCESS){
 			initMap(r.point);
@@ -83,7 +82,7 @@ function setMapEvent(){
 	map.enableScrollWheelZoom();//启用地图滚轮放大缩小
 	map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
 	map.enableKeyboard();//启用键盘上下左右键移动地图
-	map.enablePinchToZoom();
+	map.enablePinchToZoom();//启用手势缩放
 }
 
 //地图控件添加函数：
@@ -105,8 +104,19 @@ function addMapControl(){
 }
 //创建marker
 function addMarker(){
-	createMarker(roadMarkerArr);
-	createMarker(markerArr);
+	//createMarker(roadMarkerArr);
+	//createMarker(markerArr);
+	$.ajax({
+		type:"GET",
+		dataType:'json',
+		url:"http://yujin.scs.im/parkers.json",
+		success:function(data){
+			createMarker(data);
+		},
+		error: function(){
+		
+		}
+	});
 }
 //更具数组创建marker
 function createMarker(arr){
@@ -115,16 +125,35 @@ function createMarker(arr){
 		var p0 = json.point.split("|")[0];
 		var p1 = json.point.split("|")[1];
 		var point = new BMap.Point(p0,p1);
-		var iconImg = createIcon(json.imgUrl, json.icon);
+		//var iconImg = createIcon(json.imgUrl, json.icon);
+		var iconImg;
+		if (json.road_garage == 1) {
+			if(json.status == "idle"){
+				iconImg = createIcon("./img/green.png");
+			}else if (json.status == "busy") {
+				iconImg = createIcon("./img/orange.png");
+			}else if (json.status == "nervous") {
+				iconImg = createIcon("./img/red.png");
+			}else{
+				iconImg = createIcon("./img/gray.png");
+			}
+		}else{
+			if(json.status == "idle"){
+				iconImg = createIcon("./img/green_p.png");
+			}else{
+				iconImg = createIcon("./img/gray_p.png");
+			}
+		}
 		var marker = new BMap.Marker(point,{icon:iconImg});
 		var iw = createInfoWindow(i, arr);
-		if (json.remainSpace != null){
-			var label = new BMap.Label(json.remainSpace, {offset:new BMap.Size(20, 15)});
+		if (json.road_garage == 1){
+			var label = new BMap.Label(json.remaining_parking_spaces, {offset:new BMap.Size(12, 20)});
 			label.setStyle({
 				color:"yellow",
 				border:"0",
+				width:"50px",
 				textAlign:"center",
-				fontSize:"14px",
+				fontSize:"16px",
 				cursor:"pointer",
 				fontWeight :"bold" ,
 				backgroundColor:"0.05"
@@ -166,26 +195,23 @@ function createMarker(arr){
 //创建InfoWindow
 function createInfoWindow(i, arr){
 	var json = arr[i];
-	var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
+	var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.garage_name
+	+ "'>" + json.garage_name + "</b><div class='iw_poi_content'>"+'价格：'+json.price+'元/小时'+'&nbsp;&nbsp;&nbsp;&nbsp;车位：'+json.remaining_parking_spaces+'/'+json.total_parking_spaces+'<br/>'+'地址：'+json.address+"</div>", {enableMessage:false});
 	return iw;
 }
-//创建一个Icon
-function createIcon(imgUrl, json){
-	var icon = new BMap.Icon(imgUrl, new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)});
+//创建一个Icon, json
+function createIcon(imgUrl){
+	//var icon = new BMap.Icon(imgUrl, new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)});
+	var icon = new BMap.Icon(imgUrl, new BMap.Size(72, 72),{      
+		// 指定定位位置。     
+		// 当标注显示在地图上时，其所指向的地理位置距离图标左上      
+		// 角各偏移36像素和75像素。您可以看到在本例中该位置即是     
+		// 图标中央下端的尖角位置。      
+		anchor: new BMap.Size(36, 75)        
+	});
 	return icon;
 }
-//清除所有标记
-function clearMark(){
-	//清除标记
-	if (markerArr.length > 0){
-		for(var index in markerArr ){
-			map.removeOverlay(markerArr[index]); 
-		}
-		markerArr.splice(0, markerArr.length);
-	}else{
-		return false;
-	}
-}
+
 //处理回退事件
 function onBackKeyDown() {
 	if( window.location.hash == "#main" || window.location.hash==""){

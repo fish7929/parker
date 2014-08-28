@@ -65,12 +65,15 @@
                 script.src = "plugins/af.desktopBrowsers.js";
                 var tag = $("head").append(script);
             }
-			$.ui.ready(function(){ 
+			$.ui.ready(function(){
+				$("#afui").get(0).className='ios7'; 
+				/*
 				if ($.os.android){
 					$("#afui").get(0).className='android'; //setting android theme
 				}else{
 					$("#afui").get(0).className='ios7'; 	//setting ios7 theme
 				}
+				*/
 			});
         </script>
 		

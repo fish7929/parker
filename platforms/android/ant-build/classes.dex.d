@@ -30,5 +30,6 @@ E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\geoloc
 E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\geolocation\GeoBroker.class \
 E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\geolocation\GPSListener.class \
 E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\geolocation\NetworkListener.class \
+E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\splashscreen\SplashScreen.class \
 E:\PhoneGap\parker\platforms\android\ant-build\classes\org\apache\cordova\vibration\Vibration.class \
 E:\PhoneGap\parker\platforms\android\ant-build\dexedLibs\classes-34937c9d59db8e4deaedb81b7ee39d45.jar \
