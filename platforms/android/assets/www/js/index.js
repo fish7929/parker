@@ -82,7 +82,7 @@ function addMarker(){
 	$.ajax({
 		type:"GET",
 		dataType:'json',
-		url:"http://yujin.scs.im/parkers.json",
+		url:"http://yj.wgq.me/information/fullInformations.json",
 		success:function(data){
 			createMarker(data);
 		},
@@ -94,33 +94,42 @@ function addMarker(){
 //更具数组创建marker
 function createMarker(arr){
 	for(var i=0;i<arr.length;i++){
-		var json = arr[i];
-		var p0 = json.point.split("|")[0];
-		var p1 = json.point.split("|")[1];
-		var point = new BMap.Point(p0,p1);
+		//获取information的json
+		var information = arr[i].information;
+		//从information获取经纬度
+		var point = new BMap.Point(information.longitude,information.latitude);
 		//var iconImg = createIcon(json.imgUrl, json.icon);
 		var iconImg;
-		if (json.road_garage == 1) {
+		if (information.position == 1) {
+			//TODO 判断状态，这里先写死
+			iconImg = createIcon("img/green.png");
+			/*
 			if(json.status == "idle"){
-				iconImg = createIcon("./img/green.png");
+				iconImg = createIcon("img/green.png");
 			}else if (json.status == "busy") {
-				iconImg = createIcon("./img/orange.png");
+				iconImg = createIcon("img/orange.png");
 			}else if (json.status == "nervous") {
-				iconImg = createIcon("./img/red.png");
+				iconImg = createIcon("img/red.png");
 			}else{
-				iconImg = createIcon("./img/gray.png");
+				iconImg = createIcon("img/gray.png");
 			}
+			*/
 		}else{
+			//TODO 判断状态，这里先写死
+			iconImg = createIcon("img/green_p.png");
+			/*
 			if(json.status == "idle"){
-				iconImg = createIcon("./img/green_p.png");
+				iconImg = createIcon("/assets/img/green_p.png");
 			}else{
-				iconImg = createIcon("./img/gray_p.png");
+				iconImg = createIcon("/assets/img/gray_p.png");
 			}
+			*/
 		}
 		var marker = new BMap.Marker(point,{icon:iconImg});
 		var iw = createInfoWindow(i, arr);
-		if (json.road_garage == 1){
-			var label = new BMap.Label(json.remaining_parking_spaces, {offset:new BMap.Size(12, 20)});
+		if (information.position == 1){
+			//剩余车位数，暂时不知道，先写死5
+			var label = new BMap.Label(5, {offset:new BMap.Size(12, 20)});
 			label.setStyle({
 				color:"yellow",
 				border:"0",
@@ -156,10 +165,12 @@ function createMarker(arr){
 			//两个感叹号的作用就在于，如果明确设置了变量的值
 			//（非null/undifined/0/”“等值),
 			//结果就会根据变量的实际值来返回，如果没有设置，结果就会返回false。
+			/*
 			if(!!json.isOpen){
 				//label.hide();
 				_marker.openInfoWindow(_iw);
 			}
+			*/
 		})()
 	}
 
@@ -167,9 +178,7 @@ function createMarker(arr){
 
 //创建InfoWindow
 function createInfoWindow(i, arr){
-	var json = arr[i];
-	var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.garage_name
-	+ "'>" + json.garage_name + "</b><div class='iw_poi_content'>"+'价格：'+json.price+'元/小时'+'&nbsp;&nbsp;&nbsp;&nbsp;车位：'+json.remaining_parking_spaces+'/'+json.total_parking_spaces+'<br/>'+'地址：'+json.address+"</div>", {enableMessage:false});
+	var iw = new BMap.InfoWindow(createHtmlStr(i, arr), {enableMessage:false});
 	return iw;
 }
 //创建一个Icon, json
@@ -187,7 +196,8 @@ function createIcon(imgUrl){
 
 //处理回退事件
 function onBackKeyDown() {
-	if( window.location.hash == "#main" || window.location.hash==""){
+	alert(window.location.hash +"-----"+ window.location);
+	if( window.location.hash == "#main" || window.location.hash=="" || window.location == "index.html"){
 		navigator.notification.confirm("是否退出应用", confirmMsg, "退出程序", "确认,取消"); //退出程序
 	}else{
 		navigator.app.backHistory();
@@ -271,4 +281,27 @@ function addPositionMarker(point){
 	map.addOverlay(mk);
 }
 
+
+//生成点击地图弹出框的html 
+//暂时的剩余车位数不清楚
+function createHtmlStr(i, arr){
+	//获取information的json
+	var information = arr[i].information;
+	//获取tariff的json数组
+	var tariffs = arr[i].tariff;
+	//获取免费的时间
+	var time_range = tariffs[0].time_range;
+	//获取每小时多少资费
+	var rates = tariffs[1].rates;
+	//获取locality的json数组
+	var localities = arr[i].locality;
+	//获取具体的地址
+	var addr = localities[0].name;
+	var str = "";
+	str = "<b class='iw_poi_title' title='"+information.garage_name+"'>" 
+		+information.garage_name+"</b><div class='iw_poi_content'>"
+		+'价格：前'+time_range+'小时免费,&nbsp;&nbsp;&nbsp;&nbsp;其他' +rates+'元/小时'+'&nbsp;&nbsp;&nbsp;&nbsp;车位：'
+		+5+'/'+information.total_parking_space+'<br/>'+'地址：'+addr+"</div>";
+	return str;
+}
 
